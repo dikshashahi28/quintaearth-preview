@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#F4F1EA" />
+  <meta name="description" content="QuintaEarth — a sustainable-luxury PR practice. Sample C, not live." />
+  <title>SAMPLE C · Intelligence · QuintaEarth</title>
+  <style>
+    :root {
+      --paper: #F4F1EA;
+      --ink: #1C1B18;
+      --muted: #6A655C;
+      --brass: #7D6A4F;
+      --line: #D8D2C6;
+      --elevated: #FBF9F4;
+      --header-h: 4.5rem;
+      color-scheme: light;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, Geist, Outfit, system-ui, sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.65;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    a {
+      color: var(--brass);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.18em;
+      transition: color 0.24s ease;
+    }
+    a:hover { color: var(--ink); }
+
+    :focus { outline: none; }
+    :focus-visible {
+      outline: 2px solid var(--brass);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: 0;
+      z-index: 80;
+      padding: 0.65rem 1rem;
+      background: var(--ink);
+      color: var(--paper);
+      text-decoration: none;
+      transform: translateY(-120%);
+      transition: transform 0.2s ease;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .wrap {
+      width: min(72rem, calc(100% - 2.5rem));
+      margin-inline: auto;
+    }
+
+    .sample-flag {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 60;
+      padding: 0.4rem 0.75rem;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.3;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding-top: 1.35rem;
+    }
+
+    .site-header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: var(--header-h);
+      padding: 0.75rem 0;
+    }
+
+    .brand {
+      font-family: "Crimson Pro", Georgia, serif;
+      font-size: 1.65rem;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .brand span { color: var(--brass); }
+
+    .nav-toggle {
+      display: none;
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--elevated);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.9375rem;
+      padding: 0.55rem 0.9rem;
+      min-height: 44px;
+      min-width: 44px;
+      cursor: pointer;
+      transition: border-color 0.24s ease, color 0.24s ease;
+    }
+    .nav-toggle[aria-expanded="true"] {
+      border-color: var(--brass);
+      color: var(--brass);
+    }
+
+    .site-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.2rem 1.05rem;
+      justify-content: flex-end;
+    }
+    .site-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.875rem;
+    }
+    .site-nav a:hover { color: var(--ink); }
+    .site-nav .nav-join {
+      color: var(--brass);
+      border-bottom: 1px solid color-mix(in srgb, var(--brass) 50%, var(--line));
+    }
+
+    .hero {
+      padding: clamp(1.75rem, 5vw, 2.75rem) 0 clamp(1.25rem, 3vw, 1.75rem);
+    }
+
+    .hero__row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 1.5rem 2.5rem;
+      align-items: end;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kicker {
+      margin: 0 0 0.55rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--brass);
+    }
+
+    .hero h1 {
+      margin: 0 0 0.65rem;
+      font-family: "Crimson Pro", Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(2.15rem, 5.5vw, 3.15rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 36rem;
+      color: var(--muted);
+      font-size: 1.0625rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0.65rem 1.25rem;
+      background: var(--brass);
+      color: var(--paper);
+      text-decoration: none;
+      border: 1px solid var(--brass);
+      font-size: 1rem;
+      transition: background 0.24s ease, color 0.24s ease, border-color 0.24s ease;
+    }
+    .btn:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--paper);
+    }
+
+    .markets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1.5rem;
+      align-items: baseline;
+      margin-top: 1.15rem;
+      font-size: 0.9875rem;
+      color: var(--muted);
+    }
+    .markets strong {
+      font-family: "Crimson Pro", Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .rooms {
+      padding: clamp(1.75rem, 4vw, 2.75rem) 0 3rem;
+    }
+
+    .rooms h2 {
+      margin: 0 0 1.25rem;
+      font-family: "Crimson Pro", Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 3.5vw, 2rem);
+      scroll-margin-top: calc(var(--header-h) + 2rem);
+    }
+
+    .room-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .room {
+      grid-column: span 3;
+      display: flex;
+      flex-direction: column;
+      min-height: 16.5rem;
+      padding: 1.35rem 1.4rem 1.45rem;
+      background: var(--elevated);
+      border: 1px solid var(--line);
+      position: relative;
+      transition: border-color 0.24s ease;
+    }
+    .room:hover { border-color: color-mix(in srgb, var(--brass) 45%, var(--line)); }
+    .room--wide { grid-column: span 6; min-height: 12.5rem; }
+
+    .room__meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brass);
+    }
+
+    .room h3 {
+      margin: 0 0 0.5rem;
+      font-family: "Crimson Pro", Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 1.85rem);
+      font-weight: 500;
+      line-height: 1.15;
+    }
+
+    .room p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 38rem;
+    }
+
+    .room__empty {
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 0.9875rem;
+    }
+
+    .site-footer {
+      margin-top: 0.25rem;
+      padding: 2rem 1.25rem 2.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+      border-top: 1px solid var(--line);
+    }
+    .site-footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .site-footer a:hover { color: var(--ink); }
+    .site-footer nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 0.65rem;
+    }
+
+    @media (max-width: 860px) {
+      .nav-toggle { display: inline-flex; align-items: center; }
+      .site-header__inner { flex-wrap: wrap; }
+      .site-nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding-bottom: 0.75rem;
+      }
+      .site-nav.is-open { display: flex; }
+      .site-nav a {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--line);
+        min-height: 48px;
+        font-size: 1rem;
+      }
+      .hero__row { grid-template-columns: 1fr; }
+      .room,
+      .room--wide { grid-column: span 6; min-height: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .wrap { width: min(72rem, calc(100% - 1.75rem)); }
+      body { font-size: 1.0625rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="sample-flag">SAMPLE C — not live</div>
+
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="brand" href="#main" translate="no">Quinta<span>Earth</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Rooms">
+        <a href="#press">Press</a>
+        <a href="#collaborators">Collaborators</a>
+        <a href="#reports">Reports</a>
+        <a href="#community">Community</a>
+        <a href="#discussion">Discussion</a>
+        <a class="nav-join" href="#community">Join Brainerd</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero__row">
+          <div>
+            <p class="kicker">Intelligence rooms</p>
+            <h1>QuintaEarth keeps five rooms.</h1>
+            <p class="lead">A sustainable-luxury PR practice. Sustainability as craft, not charity. Each room below is furnished and waiting — nothing invented to look busy.</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn" href="https://chat.whatsapp.com/DLLpwsKL4Qf8C6aM5AvDWi?s=cl&amp;p=a&amp;mlu=4&amp;ilr=4" target="_blank" rel="noopener noreferrer">Join Brainerd — the greentech community</a>
+          </div>
+        </div>
+        <p class="markets">
+          <strong>Europe</strong>
+          <span aria-hidden="true">↔</span>
+          <strong>Southeast Asia</strong>
+          <span>Press and collaborators across both markets.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="rooms" aria-label="Intelligence rooms">
+      <div class="wrap">
+        <h2>Rooms</h2>
+        <div class="room-grid">
+          <article class="room" id="press">
+            <div class="room__meta">
+              <span>Room 01</span>
+              <span>Open</span>
+            </div>
+            <h3>Press</h3>
+            <p>Greentech releases written from this practice, filed when they exist.</p>
+            <p class="room__empty">Press desk is open. Releases will appear here.</p>
+          </article>
+
+          <article class="room" id="collaborators">
+            <div class="room__meta">
+              <span>Room 02</span>
+              <span>Waiting</span>
+            </div>
+            <h3>Collaborators</h3>
+            <p>Houses, founders, and practices in greentech — named only when they have agreed to be seen.</p>
+            <p class="room__empty">No collaborators listed yet. This room stays unnamed until then.</p>
+          </article>
+
+          <article class="room" id="reports">
+            <div class="room__meta">
+              <span>Room 03</span>
+              <span>Coming</span>
+            </div>
+            <h3>Reports</h3>
+            <p>Intelligence notes on markets, craft CSR, and the Europe ↔ Southeast Asia bridge.</p>
+            <p class="room__empty">No reports filed. Notes will be dated here when they are written.</p>
+          </article>
+
+          <article class="room" id="community">
+            <div class="room__meta">
+              <span>Room 04</span>
+              <span>Live</span>
+            </div>
+            <h3>Community</h3>
+            <p>Brainerd — the greentech community beside the practice. A WhatsApp room, not a broadcast.</p>
+            <p class="room__empty">
+              <a href="https://chat.whatsapp.com/DLLpwsKL4Qf8C6aM5AvDWi?s=cl&amp;p=a&amp;mlu=4&amp;ilr=4" target="_blank" rel="noopener noreferrer">Join Brainerd — the greentech community</a>
+            </p>
+          </article>
+
+          <article class="room room--wide" id="discussion">
+            <div class="room__meta">
+              <span>Room 05</span>
+              <span>Furnished</span>
+            </div>
+            <h3>Discussion</h3>
+            <p>A longer table for what people are building in greentech and cleantech. Insights belong here, not on the press desk.</p>
+            <p class="room__empty">The room is ready. Live threads are not switched on yet.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav aria-label="Other samples">
+      <a href="index-desk.html">Sample A</a>
+      <a href="index-stories.html">Sample B</a>
+      <a href="index-intelligence.html" aria-current="page">Sample C</a>
+    </nav>
+    <p translate="no">QuintaEarth · sample · not live</p>
+  </footer>
+
+  <script>
+    (function () {
+      var toggle = document.querySelector(".nav-toggle");
+      var nav = document.getElementById("site-nav");
+      if (!toggle || !nav) return;
+      toggle.addEventListener("click", function () {
+        var open = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", open ? "false" : "true");
+        nav.classList.toggle("is-open", !open);
+      });
+      nav.addEventListener("click", function (event) {
+        if (event.target.tagName === "A") {
+          toggle.setAttribute("aria-expanded", "false");
+          nav.classList.remove("is-open");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
